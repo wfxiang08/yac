@@ -21,7 +21,9 @@
 #ifndef YAC_STORAGE_H
 #define YAC_STORAGE_H
 
+// 最多1M数据，如果太大，可能cache失效，业务逻辑本身也存在不合理
 #define YAC_STORAGE_MAX_ENTRY_LEN  	(1 << 20)
+// 最大的key的长度
 #define YAC_STORAGE_MAX_KEY_LEN		(48)
 #define YAC_STORAGE_FACTOR 			(1.25)
 #define YAC_KEY_KLEN_MASK			(255)
