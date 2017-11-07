@@ -965,10 +965,16 @@ PHP_MINIT_FUNCTION (yac) {
 
     REGISTER_INI_ENTRIES();
 
+    //
+    // 如何初始化Yac呢?
+    // enable_cli 作用?
+    // 如何判断是否为cli, 如果判断是否enable?
+    //
     if (!YAC_G(enable_cli) && !strcmp(sapi_module.name, "cli")) {
         YAC_G(enable) = 0;
     }
 
+    // 如果enable, 则获取共享内存
     if (YAC_G(enable)) {
         if (!yac_storage_startup(YAC_G(k_msize), YAC_G(v_msize), &msg)) {
             php_error(E_ERROR, "Shared memory allocator startup failed at '%s': %s", msg, strerror(errno));

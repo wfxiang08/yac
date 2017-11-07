@@ -403,7 +403,10 @@ int yac_storage_update(char *key, unsigned int len, char *data, unsigned int siz
 	yac_kv_val *val, *s;
 	unsigned long real_size;
 
+	// 计算hash
 	hash = h = yac_inline_hash_func1(key, len);
+
+	// 通过mask从hash得到index
 	paths[idx++] = p = &(YAC_SG(slots)[h & YAC_SG(slots_mask)]);
 	k = *p;
 	if (k.val) {
@@ -446,8 +449,11 @@ do_update:
 				s = USER_ALLOC(sizeof(yac_kv_val) + size - 1);
 				memcpy(s->data, data, size);
 				s->atime = tv;
+
+				// 实际分配内存
 				YAC_KEY_SET_LEN(*s, len, size);
 				val = yac_allocator_raw_alloc(real_size, (int)hash);
+
 				if (val) {
 					memcpy((char *)val, (char *)s, msize);
 					if (ttl) {

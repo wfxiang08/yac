@@ -56,6 +56,8 @@ static int create_segments(unsigned long k_size, unsigned long v_size, yac_share
 
 	allocate_size = k_size + v_size;
 
+	// MAP_ANONYMOUS + MAP_SHARED:
+	// 匿名映射
 	first_segment.common.p = mmap(0, allocate_size, PROT_READ | PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
 	if (first_segment.common.p == MAP_FAILED) {
 		*error_in = "mmap";

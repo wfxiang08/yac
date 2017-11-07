@@ -27,6 +27,7 @@
 static const yac_shared_memory_handlers *shared_memory_handler = NULL;
 static const char *shared_model;
 
+// 如何分配共享内存呢?
 int yac_allocator_startup(unsigned long k_size, unsigned long size, char **msg) /* {{{ */ {
 	char *p;
 	yac_shared_segment *segments = NULL;
@@ -64,10 +65,12 @@ int yac_allocator_startup(unsigned long k_size, unsigned long size, char **msg) 
 
 	p = (char *)YAC_SG(segments) + (sizeof(void *) * YAC_SG(segments_num));
 	memcpy(p, (char *)segments + segment_size, segments_array_size);
+
 	for (i = 0; i < YAC_SG(segments_num); i++) {
 		YAC_SG(segments)[i] = (yac_shared_segment *)p;
 		p += segment_size;
 	}
+
 	YAC_SG(slots) = (yac_kv_key *)((char *)YAC_SG(segments)
 			+ (YAC_SG(segments_num) * sizeof(void *)) + YAC_SMM_ALIGNED_SIZE(segments_array_size));
 
